@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-import-customization",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "plugin that provide ability to customize imported file by file name suffix.",
   "scripts": {
