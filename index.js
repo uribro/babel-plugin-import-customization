@@ -1,5 +1,7 @@
 const path = require('path');
 const fs = require('fs');
+const utils = require('./utils');
+
 
 const trimJSExtentions = (filePath) => {
     return filePath.replace(/\.js$/, '');
@@ -16,9 +18,9 @@ const getCustomizationFilePath = (filename, customizationSuffix, importedValue) 
     const importedFilePath = path.resolve(importingDir, importedValue)
     const importedFileDir =  path.dirname(importedFilePath)
     const importedFileName = path.basename(importedFilePath);
-    const importedFileNameWithoutExention = trimJSExtentions(importedFileName);
-    const custFileToLoadName = importedFileNameWithoutExention + '.' + customizationSuffix + '.js'
+    const custFileToLoadName = utils.getMatchedFileName(importedFileName, customizationSuffix);
     const custFilePath = path.resolve(importedFileDir, custFileToLoadName);
+
     return custFilePath;
 }
 
@@ -55,7 +57,7 @@ const transform = (treePath, state, isCallExpression, t) => {
         const isCustFileExists = fs.existsSync(custFilePath);
 
         if (isCustFileExists) {
-            const newImportedValue = trimJSExtentions(importedValue) + '.' + customizationSuffix;
+            const newImportedValue = utils.getMatchedFileName(importedValue, customizationSuffix);
             const newPath = t.stringLiteral(newImportedValue);
             if (isCallExpression) {
                 treePath.replaceWith(t.CallExpression(treePath.node.callee, [newPath]));

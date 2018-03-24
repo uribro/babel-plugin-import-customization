@@ -1,7 +1,6 @@
 const Module = require('./lib').default;
 const RequireComponent = require('./lib').RequireComponent;
 
-
 test('it should customize and import original file into customization', () => {
   const module = new Module();
 
@@ -14,6 +13,8 @@ test('it should customize and import original file into customization with requi
 
   expect(module.print()).toBe('require core code and require cust code');
 });
+
+
 
 
 
