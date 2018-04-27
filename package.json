@@ -1,12 +1,12 @@
 {
   "name": "babel-plugin-import-customization",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "plugin that provide ability to customize imported file by file name suffix.",
   "scripts": {
     "test": "npm run build && jest",
     "test:watch": "jest --watchAll",
-    "build": "babel test/code --out-dir test/lib --copy-files",
+    "build": "babel tests/code --out-dir tests/lib --copy-files",
     "build:watch": "build -- --watch"
   },
   "repository": {

@@ -32,6 +32,31 @@ const isRequireCall = (treePath, t) => {
     return t.isIdentifier(treePath.node.callee, { name: 'require' });;
 }
 
+const insertBeforeLastOccurence = (str, strToFind, strToInsert) => {
+    const index = str.lastIndexOf(strToFind);
+    if (index < 0) {
+        return str;
+    };
+
+    return str.substring(0, index) + strToInsert + str.substring(index);   
+} 
+
+const custfileExists = (custFilePath) => {
+    let exists = fs.existsSync(custFilePath);
+    if (!exists) {
+        const reactNativeSufixes = ['.android', '.ios'];
+         reactNativeSufixes.forEach((suffix) => {
+            const filePathWithNativeSufix = insertBeforeLastOccurence(custFilePath, '.', suffix);
+            exists = fs.existsSync(filePathWithNativeSufix);
+            if (exists) {
+                return;
+            }
+        });
+    }
+
+    return exists;
+}
+
 const transform = (treePath, state, isCallExpression, t) => {
     if (isCallExpression && !isRequireCall(treePath, t)) {
        return;
@@ -54,7 +79,7 @@ const transform = (treePath, state, isCallExpression, t) => {
         
         const importedValue = source.value; 
         const custFilePath = getCustomizationFilePath(filename, customizationSuffix, importedValue)
-        const isCustFileExists = fs.existsSync(custFilePath);
+        const isCustFileExists = custfileExists(custFilePath);
 
         if (isCustFileExists) {
             const newImportedValue = utils.getMatchedFileName(importedValue, customizationSuffix);
