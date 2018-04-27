@@ -78,6 +78,21 @@ There are two ways to tell the plugin which fileSuffix to take:
    ```"plugins": [["import-customization", {"env": "suffixName"}]]```
    This allows you to create env variable named suffixName and it's value will be used by the plugin as the file suffixes to take.  
 
+## Usage in react-native script with env configuration
+I suggest to use it with cross-env module, so just "npm i cross-env" module before.
+and then in package.json add script
+```javascript
+
+  "scripts": {
+    "android:build:dev:myCustApp": "cross-env-shell APP_NAME=myCustApp \"cd android && gradlew assembleDevRelease\""
+   }
+```   
+If you you already start a react native packager make sure to start it again with cache-reset since webpack build is cached.
+to do it just run 
+
+```cli
+node node_modules/react-native/local-cli/cli.js start --reset-cache
+```
 
 ## Note
 I gave react example but this plugin can be used for any javascipt code which uses babel.
